@@ -1,4 +1,7 @@
-package com.girish.patientintake;
+package com.girish;
+
+import com.girish.patientintake.ClinicCalendar;
+import com.girish.patientintake.PatientAppointment;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -25,14 +28,20 @@ public class ClinicMain {
         System.out.println("X.  Exit System.");
         System.out.print("Option: ");
         String option = scanner.next();
-        switch (option) {
-            case "1": performPatientEntry(scanner);
-                return option;
-            case "2": performAllAppointments();
-                return option;
-            default: System.out.println("Invalid option, please re-enter.");
-                return option;
-        }
+        return switch (option) {
+            case "1" -> {
+                performPatientEntry(scanner);
+                yield option;
+            }
+            case "2" -> {
+                performAllAppointments();
+                yield option;
+            }
+            default -> {
+                System.out.println("Invalid option, please re-enter.");
+                yield option;
+            }
+        };
     }
 
     private static void performPatientEntry(Scanner scanner) {
@@ -60,8 +69,8 @@ public class ClinicMain {
         for (PatientAppointment appointment : calendar.getAppointments()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy hh:mm a");
             String apptTime = formatter.format(appointment.appointmentDateTime());
-            System.out.println(String.format("%s:  %s, %s\t\tDoctor: %s", apptTime, appointment.patientLastName(),
-                    appointment.patientFirstName(), appointment.doctor().getName()));
+            System.out.printf("%s:  %s, %s\t\tDoctor: %s%n", apptTime, appointment.patientLastName(),
+                    appointment.patientFirstName(), appointment.doctor().getName());
         }
         System.out.println("\nPress any key to continue...");
         System.in.read();

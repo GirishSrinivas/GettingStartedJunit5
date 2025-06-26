@@ -15,8 +15,8 @@ public class ClinicCalendar {
     }
 
     public void addAppointment(String patientFirstName, String patientLastName, String doctorKey,
-                               String dateTime) {
-        Doctor doc = Doctor.valueOf(doctorKey.toLowerCase());
+                               String dateTime) throws IllegalArgumentException {
+        Doctor doc = Doctor.valueOf(doctorKey.toUpperCase());
         LocalDateTime localDateTime;
         try {
             localDateTime = LocalDateTime.parse(dateTime.toUpperCase(),
